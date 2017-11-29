@@ -30,6 +30,16 @@ namespace CortanaControlsHome
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.Register();
+        }
+
+
+        // Add cortana voice commands
+        private async void Register()
+        {
+            var storageFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///VoiceCommands.xml "));
+            await Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager.InstallCommandDefinitionsFromStorageFileAsync(storageFile);
+
         }
 
         /// <summary>
@@ -95,6 +105,65 @@ namespace CortanaControlsHome
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        protected override async void OnActivated(IActivatedEventArgs args)
+        {
+            base.OnActivated(args);
+
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            // Do not repeat app initialization when the Window already has content,
+            // just ensure that the window is active
+            if (rootFrame == null)
+            {
+                // Create a Frame to act as the navigation context and navigate to the first page
+                rootFrame = new Frame();
+
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                // Place the frame in the current Window
+                Window.Current.Content = rootFrame;
+            }
+
+            if (rootFrame.Content == null)
+            {
+                //use the "command" which was spoken by the user.
+                // i am just checking weather the Activation is by Voice command or not and  navigating.
+                if (args.Kind != Windows.ApplicationModel.Activation.ActivationKind.VoiceCommand)
+                {
+                    rootFrame.Navigate(typeof(MainPage), args.Kind);
+                }
+                else
+                {
+                    rootFrame.Navigate(typeof(MainPage), args.Kind);
+                }
+
+                // When the navigation stack isn't restored navigate to the first page,
+                // configuring the new page by passing required information as a navigation
+                // parameter
+            }
+            // Ensure the current window is active
+            Window.Current.Activate();
+
+            if (args.Kind != Windows.ApplicationModel.Activation.ActivationKind.VoiceCommand)
+                return;
+            var page = (MainPage)rootFrame.Content;
+
+            var commandArgs = args as Windows.ApplicationModel.Activation.VoiceCommandActivatedEventArgs;
+            var speechRecognitionResult = commandArgs.Result;
+            var command = speechRecognitionResult.Text;
+
+            string voiceCommandName = speechRecognitionResult.RulePath[0];
+            switch (voiceCommandName)
+            {
+                case "LedOn":
+                    await page.SendMessage("1".ToString());
+                    break;
+                case "LedOff":
+                    await page.SendMessage("0".ToString());
+                    break;
+            }
         }
     }
 }

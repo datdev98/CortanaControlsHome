@@ -7,6 +7,7 @@ using Windows.Devices.SerialCommunication;
 using Windows.Storage.Streams;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Navigation;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -175,11 +176,8 @@ namespace CortanaControlsHome
             {
                 if (serialPort != null)
                 {
-                    // Create the DataWriter object and attach to OutputStream
-                    dataWriteObject = new DataWriter(serialPort.OutputStream);
-
                     //Launch the WriteAsync task to perform the write
-                    await WriteAsync();
+                    await SendMessage(txtSend.Text);
                 }
                 else
                 {
@@ -201,14 +199,17 @@ namespace CortanaControlsHome
             }
         }
 
-        private async Task WriteAsync()
+        public async Task SendMessage(String cmd)
         {
+            // Create the DataWriter object and attach to OutputStream
+            dataWriteObject = new DataWriter(serialPort.OutputStream);
+
             Task<UInt32> storeAsyncTask;
 
-            if (txtSend.Text.Length != 0)
+            if (cmd.Length != 0)
             {
                 // Load the text from the sendText input text box to the dataWriter object
-                dataWriteObject.WriteString(txtSend.Text);
+                dataWriteObject.WriteString(cmd);
 
                 // Launch an async task to complete the write operation
                 storeAsyncTask = dataWriteObject.StoreAsync().AsTask();
