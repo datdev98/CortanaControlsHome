@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.2">
+  <CommandSet xml:lang="en-us" Name="EnglishCommands-us">
+    <CommandPrefix>Light</CommandPrefix>
+    <Example>On</Example>
+    <Command Name="LedOn">
+      <Example>On</Example>
+      <ListenFor>On</ListenFor>
+      <Feedback>Turning on the light...</Feedback>
+      <Navigate/>
+    </Command>
+    <Command Name="LedOff">
+      <Example>Off</Example>
+      <ListenFor>Off</ListenFor>
+      <Feedback>Turning off the light...</Feedback>
+      <Navigate/>
+    </Command>
+  </CommandSet>
+</VoiceCommands>
