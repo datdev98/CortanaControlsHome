@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.SpeechRecognition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -157,13 +158,46 @@ namespace CortanaControlsHome
             string voiceCommandName = speechRecognitionResult.RulePath[0];
             switch (voiceCommandName)
             {
-                case "LedOn":
-                    await page.SendMessage("1".ToString());
+                case "OnOff":
+                    // Access the value of {destination} in the voice command.
+                    string destination = SemanticInterpretation("room", speechRecognitionResult);
+                    string state = SemanticInterpretation("state", speechRecognitionResult);
+
+                    await page.SendMessage(Cmd(destination, state));
                     break;
-                case "LedOff":
-                    await page.SendMessage("0".ToString());
+                default:
                     break;
             }
+        }
+
+        private string SemanticInterpretation(string interpretationKey, SpeechRecognitionResult speechRecognitionResult)
+        {
+            return speechRecognitionResult.SemanticInterpretation.Properties[interpretationKey].FirstOrDefault();
+        }
+
+        private string Cmd(string room, string state)
+        {
+            string result = "";
+            switch (room)
+            {
+                case "living room":
+                    result += "1";
+                    break;
+                case "kitchen":
+                    result += "2";
+                    break;
+                case "bedroom":
+                    result += "3";
+                    break;
+                case "bathroom":
+                    result += "4";
+                    break;
+            }
+            if (state == "off")
+                result += "0";
+            else
+                result += "1";
+            return result;
         }
     }
 }

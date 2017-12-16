@@ -1,19 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.2">
   <CommandSet xml:lang="en-us" Name="EnglishCommands-us">
-    <CommandPrefix>Light</CommandPrefix>
-    <Example>On</Example>
-    <Command Name="LedOn">
-      <Example>On</Example>
-      <ListenFor>On</ListenFor>
-      <Feedback>Turning on the light...</Feedback>
+    <CommandPrefix>My Cortana</CommandPrefix>
+    <Example>living room on</Example>
+    <Command Name="OnOff">
+      <Example>living room on</Example>
+      <ListenFor>{room} {state}</ListenFor>
+      <Feedback>Turning {state} the light...</Feedback>
       <Navigate/>
     </Command>
-    <Command Name="LedOff">
-      <Example>Off</Example>
-      <ListenFor>Off</ListenFor>
-      <Feedback>Turning off the light...</Feedback>
-      <Navigate/>
-    </Command>
+    <PhraseList Label="room">
+      <Item>living room</Item>
+      <Item>kitchen</Item>
+      <Item>bedroom</Item>
+      <Item>bathroom</Item>
+    </PhraseList>
+    <PhraseList Label="state">
+      <Item>on</Item>
+      <Item>off</Item>
+    </PhraseList>
   </CommandSet>
 </VoiceCommands>
