@@ -2,10 +2,10 @@
 <VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.2">
   <CommandSet xml:lang="en-us" Name="EnglishCommands-us">
     <CommandPrefix>My Cortana</CommandPrefix>
-    <Example>living room on</Example>
+    <Example>Turn on the light in the living room</Example>
     <Command Name="OnOff">
-      <Example>living room on</Example>
-      <ListenFor>{room} {state}</ListenFor>
+      <Example>Turn on the light in the living room</Example>
+      <ListenFor>Turn {state} the light in the {room}</ListenFor>
       <Feedback>Turning {state} the light...</Feedback>
       <Navigate/>
     </Command>

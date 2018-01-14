@@ -1,7 +1,6 @@
 int livingRoom = 3;
-int kitchen = 7;
-int bedroom = 10;
-int bathroom = 13;
+int kitchen = 6;
+int bedroom = 9;
 String cmd;
 
 void setup() {
@@ -9,7 +8,6 @@ void setup() {
   pinMode(livingRoom, OUTPUT);
   pinMode(kitchen, OUTPUT);
   pinMode(bedroom, OUTPUT);
-  pinMode(bathroom, OUTPUT);
   Serial.begin(9600);
 
   while (!Serial) {
@@ -35,9 +33,6 @@ void loop() {
         case '3':
           control(bedroom, cmd[1]);
           break;
-        case '4':
-          control(bathroom, cmd[1]);
-          break;
       }
       cmd = "";
     }
@@ -50,5 +45,6 @@ void control(int room, char state) {
   else
     digitalWrite(room, HIGH);
 }
+
 
 
